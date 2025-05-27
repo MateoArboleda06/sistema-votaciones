@@ -2,6 +2,10 @@
   <div>
     <h2>Bienvenido</h2>
     <p>{{ auth.user?.name }}</p>
+
+    <router-link :to="`/questions`" class="text-blue-600 hover:underline">
+      <button>Ver preguntas disponibles</button>
+    </router-link>
   </div>
 </template>
 
