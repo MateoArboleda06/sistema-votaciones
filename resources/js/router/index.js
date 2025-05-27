@@ -7,6 +7,10 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
+import QuestionDetail from '../views/questions/QuestionDetail.vue';
+import QuestionList from '../views/questions/QuestionList.vue';
+import QuestionForm from '../views/questions/QuestionForm.vue';
+import VoteResult from '../views/questions/VoteResult.vue';
 
 const routes = [
     { path: '/', redirect: '/inicio' },
@@ -18,6 +22,10 @@ const routes = [
         children: [
             { path: '/inicio', component: Home, meta: { requiresAuth: true } },
             { path: '/admin/dashboard', component: Dashboard, meta: { requiresAuth: true, role: 'administrador' } },
+            { path: '/questions', component: QuestionList, meta: { requiresAuth: true } },
+            { path: '/questions/:id', component: QuestionDetail, meta: { requiresAuth: true } },
+            { path: '/admin/questions/create', component: QuestionForm, meta: { requiresAuth: true, role: 'administrador' } },
+            { path: '/admin/results/:id', component: VoteResult, meta: { requiresAuth: true, role: 'administrador' } },
         ]
     },
 ];
