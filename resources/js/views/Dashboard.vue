@@ -8,9 +8,9 @@
           Crear nuevo usuario
         </button>
 
-        <button class="bg-green-600 text-white px-4 py-2 rounded" @click="goToCreateQuestion">
-          Crear nueva encuesta
-        </button>
+        <router-link :to="`/admin/questions/create`" class="ml-4 bg-blue-600 text-white px-4 py-2 rounded">
+          <button>Crear nueva pregunta</button>
+        </router-link>
       </div>
     </div>
 </template>
@@ -25,10 +25,5 @@ const router = useRouter();
 const goToCreateUser = () => {
   // ejemplo de navegación extra
   alert('Aquí iría la vista de creación de usuario');
-};
-
-const goToCreateQuestion = () => {
-  // ejemplo de navegación extra
-  alert('Aquí iría la vista de creación de encuesta');
 };
 </script>
