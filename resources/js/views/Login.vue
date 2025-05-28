@@ -1,19 +1,32 @@
 <template>
-  <div class="max-w-md mx-auto mt-10 p-6 border rounded shadow">
-    <h2 class="text-2xl font-bold mb-4">Iniciar Sesión</h2>
+  <div class="max-w-md mx-auto mt-16 p-6 bg-white border rounded-2xl shadow-lg">
+
+    <h2 class="text-3xl font-bold text-center mb-6 text-blue-700">Iniciar Sesión</h2>
+
     <form @submit.prevent="login">
-      <div class="mb-4">
-        <label>Email</label>
-        <input v-model="form.email" type="email" class="w-full border px-3 py-2 rounded" required />
+      <BaseInput
+        v-model="form.email"
+        label="Correo electrónico"
+        type="email"
+        required
+      />
+      <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
+
+      <BaseInput
+        v-model="form.password"
+        label="Contraseña"
+        type="password"
+        required
+      />
+      <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
+
+      <div class="flex gap-4 mt-6">
+        <BaseButton :onClick="login">Ingresar</BaseButton>
+        <BaseButton :onClick="() => router.push('/register')">No tengo cuenta</BaseButton>
       </div>
-      <div class="mb-4">
-        <label>Contraseña</label>
-        <input v-model="form.password" type="password" class="w-full border px-3 py-2 rounded" required />
-      </div>
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Ingresar</button>
-      <button class="bg-blue-600 text-white px-4 py-2 rounded" @click="router.push('/register')">No tengo Cuenta</button>
     </form>
-    <p v-if="error" class="text-red-500 mt-2">{{ error }}</p>
+
+    <p v-if="error" class="text-red-500 mt-4 text-sm text-center">{{ error }}</p>
   </div>
 </template>
 
@@ -21,6 +34,8 @@
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../store/index';
+import BaseInput from '@/components/BaseInput.vue';
+import BaseButton from '@/components/BaseButton.vue';
 
 const auth = useAuthStore();
 const router = useRouter();
@@ -32,9 +47,45 @@ const form = reactive({
 
 const error = ref('');
 
-const login = async () => {
+const errors = reactive({
+  email: '',
+  password: ''
+});
 
+const validateForm = () => {
+
+  errors.email = '';
+  errors.password = '';
+
+  let isValid = true;
+
+  if (!form.email) {
+
+    errors.email = 'El correo electrónico es requerido';
+    isValid = false;
+
+  }
+  
+  if (!/\S+@\S+\.\S+/.test(form.email)) {
+
+    errors.email = 'El correo electrónico no es válido';
+    isValid = false;
+  }
+
+  if (!form.password) {
+
+    errors.password = 'La contraseña es requerida';
+    isValid = false;
+
+  }
+
+  return isValid;
+};
+
+const login = async () => {
   error.value = '';
+
+  if (!validateForm()) return;
 
   try {
 
